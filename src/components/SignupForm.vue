@@ -1,10 +1,11 @@
 <template>
-  <form action="">
+  <form @submit.prevent="handleSubmit">
     <label>Email:</label>
     <input type="email" required v-model="email">
 
     <label>Password:</label>
     <input type="password" required v-model="password">
+    <div class="error" v-if="passwordError.valueOf()">{{passwordError}}</div>
 
     <label>Role</label>
     <select v-model="role">
@@ -15,14 +16,17 @@
     <label>Skills</label>
     <input type="text" v-model="tempSkill" @keyup.alt="addSkill">
     <div v-for="(skill,index) in skills" :key="index" class="pill">
-      {{ skill}}
+      <span @click="deleteSkill(skill)">{{skill}}</span>
     </div>
-    
+
     <div class="terms">
       <input type="checkbox" required v-model="terms">
       <label>Accept terms and conditions</label>
     </div>
 
+    <div class="submit">
+      <button>Create an Account</button>
+    </div>
 <!--    <div>-->
 <!--      <input type="checkbox" value="shaun" v-model="names">-->
 <!--      <label>Shaun</label>-->
@@ -55,6 +59,8 @@ let names = ref([])
 let skills = ref([])
 let tempSkill = ref('')
 
+let passwordError = ref('')
+
 
 function addSkill(e){
 
@@ -66,6 +72,16 @@ function addSkill(e){
 
     tempSkill.value = ''
   }
+}
+
+function deleteSkill(skill){
+  skills.value = skills.value.filter((s)=>s!==skill)
+}
+
+function handleSubmit() {
+  //validate password
+  console.log("HANDLE SUBMIT")
+  passwordError.value = password.value.length > 5 ? '' : 'Password must have at least 6 characters'
 }
 </script>
 
@@ -103,5 +119,33 @@ input[type="checkbox"] {
   margin: 0 10px 0 0;
   position: relative;
   top: 2px
+}
+.pill {
+  display: inline-block;
+  margin: 20px 10px 0 0;
+  padding: 6px 12px;
+  background: #eee;
+  border-radius: 20px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  font-weight: bold;
+  color: #777;
+  cursor: pointer;
+}
+button {
+  background: #0b6dff;
+  border: 0;
+  padding: 10px 20px;
+  color: white;
+  border-radius: 20px;
+}
+.submit {
+  text-align: center;
+}
+.error {
+  color: #ff0062;
+  margin-top: 10px;
+  font-size: 0.8em;
+  font-weight: bold;
 }
 </style>
