@@ -12,6 +12,12 @@
       <option value="designer">Web Designer</option>
     </select>
 
+    <label>Skills</label>
+    <input type="text" v-model="tempSkill" @keyup.alt="addSkill">
+    <div v-for="(skill,index) in skills" :key="index" class="pill">
+      {{ skill}}
+    </div>
+    
     <div class="terms">
       <input type="checkbox" required v-model="terms">
       <label>Accept terms and conditions</label>
@@ -46,6 +52,21 @@ let password = ref('')
 let role = ref('designer')
 let terms = ref('false')
 let names = ref([])
+let skills = ref([])
+let tempSkill = ref('')
+
+
+function addSkill(e){
+
+  if(e.key === ',' && tempSkill){
+    if(!skills.value.includes(tempSkill.value))
+    {
+      skills.value.push(tempSkill.value)
+    }
+
+    tempSkill.value = ''
+  }
+}
 </script>
 
 <style scoped>
